@@ -1,0 +1,35 @@
+To achieve the task, I designed a job with three components
+
+1. tHttpRequest_1
+
+This component can send GET/POST request to a webserver and retrieve the content. Since the url follows the GET protocol, I select the GET in the Method section and the type url in the URI section
+
+2. tExtractXMLField_1
+
+Since the response of tHttpRequest_1 is in XML code, the fields need to be extracted using the tExtractXMLField_1.
+
+Here three options are to be paid attention to.
+
+	a) Advanced Settings --> Ignore Namespaces
+		This option was checked as the xml contained namespaces, which require complicated xpath.
+
+	b) Loop XPath query
+		i)This points to the location within the XML code which serves as the loop point whose child-nodes contain the information required.
+		ii)As date, time and currency were the information needed which were populated in the leaf "Cube" nodes, this becomes the loop point is the grandparent of the leave nodes also called "Cube".
+	c)Edit Schema
+		i)Now columns are to be created so that the output may display these columns and the rows. Three columns were created called date, time and currency.
+	d)Mapping
+		Now that the columns have been created, the xpath queries need to be set for each column to retrieve the information.
+		i) currency
+			The currency attribute of each leaf "Cube" node needs to be accessed.
+		ii) rate
+			The rate attribute of each leaf "Cube" node needs to be accessed.
+		iii) time
+			The time attribute on the other hand is located in the parent of the leaf "Cube" nodes. Therefore, for this entry to appear for each output row, the data needs to retrieved by accessing the parent node of the leaves.
+
+3. tFileOutputDelimited_1
+Now that all the data is retrieved, they need to be placed in a csv format and stored in a csv file. This is where the tFileOutputDelimited_1 comes in.
+The "Include Header" checkbox needs to be checked to include the header column names. The File Name section needs to be filled out to save the file in the desired location. If required, the Advanced Settings section can be used to change the encoding.
+
+However, most importantly, the Sync Columns needs to be clicked so that the columns outputted by the previous component serve as the input for the csv file.
+		
